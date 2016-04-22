@@ -20,15 +20,23 @@ corr<-function(directory, threshold = 0){
   ## variables) required to compute the correlation between
   ## nitrate and sulfate; the default is 0
   
+  ##sulfate<-c()
+  ##nitrate<-c()
+  x<-c()
+  
   for (i in 1:nrow(com)) {
     if (com[i,"nobs"]>threshold) {
-      data<-read.csv(paste(com[i,"id"],"/",str_pad(id[1],3),".csv",sep=""))
-      sulfate<-data[['sulfate']]
-      ##bad<-is.na(subset)
-      ##s<-sulfate[!bad]
+      ##x<-paste(directory,"/",str_pad(i,3),".csv",sep="")
+      data<-read.csv(paste(directory,"/",str_pad(i,3),".csv",sep=""))
+      good<-complete.cases(data)
+      ##sulfate<-c(sulfate,data[2][good,])
+      ##nitrate<-c(nitrate,data[3][good,])
+      x<-c(x,cor(data[2][good,],data[3][good,]))
     }
   }
   
   ## Return a numeric vector of correlations
   ## NOTE: Do not round the result! 
-}
+  ##x<-data.frame("sulfate"=sulfate,"nitrate"=nitrate)
+  x
+  }
